@@ -102,18 +102,18 @@ This is a POC app. Prefer simplicity and document production requirements.
 
 ## Tradeoffs
 1. **In-Memory Storage vs. Persistence**
-   - Chosen: In-memory (faster, simpler for POC)
-   - Future: Add PostgreSQL with connection pooling
+  - Chosen: In-memory (faster, simpler for POC)
+  - Future: Add PostgreSQL with connection pooling
 
 2. **Client-Side Sorting vs. Server-Side**
-   - Chosen: Client-side (faster, no API overhead)
-   - Limit: < 10k rows before noticeable lag
-   - Future: Server-side with database indexes for > 100k rows
+  - Chosen: Client-side (faster, no API overhead)
+  - Limit: < 10k rows before noticeable lag
+  - Future: Server-side with database indexes for > 100k rows
 
 3. **No Caching vs. Redis Cache**
-   - Chosen: No caching (simpler)
-   - Recalculates insights on every GET
-   - Future: Cache insights (5-10 min TTL) for better performance
+  - Chosen: No caching (simpler)
+  - Recalculates insights on every GET
+  - Future: Cache insights (5-10 min TTL) for better performance
 
 4. **CSR vs. SSR**
   - Chosen: CSR (simpler)
