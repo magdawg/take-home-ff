@@ -1,5 +1,6 @@
 # Portfolio Insights App
 
+
 ## Setup and usage
 
 ### 1. Start Everything with Docker
