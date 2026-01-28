@@ -1,8 +1,5 @@
 # Portfolio Insights App
 
-<img width="1499" height="658" alt="Screenshot 2026-01-28 at 15 09 03" src="https://github.com/user-attachments/assets/5db3f695-97b7-476d-a656-dcd97370a32d" />
-<img width="1502" height="752" alt="Screenshot 2026-01-28 at 15 09 15" src="https://github.com/user-attachments/assets/37f813f3-e01c-4647-ae41-f8c4d3a918c9" />
-
 
 ## Setup and usage
 
