@@ -4,7 +4,7 @@
 ## Setup and usage
 
 ### 1. Start Everything with Docker
-Ensure Docker is running on your machine, then run:
+Ensure Docker is running on your machine, then run from the top level directory of the project:
 ```bash
 make build
 make up
