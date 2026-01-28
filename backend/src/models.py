@@ -1,6 +1,7 @@
 """Pydantic models for asset management and insights"""
 
 from enum import Enum
+
 from pydantic import BaseModel, ConfigDict
 
 
