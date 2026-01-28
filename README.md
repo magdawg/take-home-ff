@@ -79,17 +79,64 @@ make down
 ---
 
 ## Reasoning and assumptions
-This is a POC app
+This is a POC app. Prefer simplicity and document production requirements.
 
-### Functional requirements
+### Functional requirements/assumptions
 - assets information is stored in-memory and not perssited when the app shuts down
 - the UI only displays the assets/insights information
 - assets creation will not be supported in the UI for now
 - defaulted asset is one who's due date has passed; active asset is one who's due date is in the future
 - asset updates are idempotent (by ID)
+- enforce data validation for creating new assets
 
-### Non-functional requirements
+### Non-functional requirements/assumptions
+- authentication is not being considered for POC
 - concurrency and scalability not an issue for POC
 - pagination of endpoints not an issue for POC
 - graceful error handling; failed API requests don't creash the application
 - test coverage >80%
+
+
+## Tradeoffs
+1. **In-Memory Storage vs. Persistence**
+   - Chosen: In-memory (faster, simpler for POC)
+   - Future: Add PostgreSQL with connection pooling
+
+2. **Client-Side Sorting vs. Server-Side**
+   - Chosen: Client-side (faster, no API overhead)
+   - Limit: < 10k rows before noticeable lag
+   - Future: Server-side with database indexes for > 100k rows
+
+3. **No Caching vs. Redis Cache**
+   - Chosen: No caching (simpler)
+   - Recalculates insights on every GET
+   - Future: Cache insights (5-10 min TTL) for better performance
+
+4. **CSR vs. SSR**
+  - Chosen: CSR (simpler)
+  - No SEO reqs; better interaction
+  - Future: Stick to CSR or consider a hybrid approach if functionality eveloves
+
+5. **Local Component State vs. Global State Management**
+  - Chosen: Local State (simpler)
+  - Current functionality does not require global state; too much boilerplate and complexity to involve Redux
+  - Future: Consider Redux if complexity of the product increases
+
+
+## Production readiness
+- add authentication (JWT/OAuth2)
+- add autorization (role-based access control)
+- enable HTTPS/TLS
+- add rate limiting per IP/User
+- restrict CORS to frontend domain
+- implement request logging and monitoring
+- use structured logs
+- add API versioning for backward compatibility
+- add pagination to GET /asset endpoint
+- add database for data persistence (e.g. Postgres)
+- add appropriate indexes for DB query performance
+- add caching (Redis) for fast load of insights
+- add E2E tests
+- perform load testing
+- improve UI design
+
