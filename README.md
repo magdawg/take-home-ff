@@ -136,6 +136,7 @@ This is a POC app. Prefer simplicity and document production requirements.
 - use structured logs
 - add API versioning for backward compatibility
 - add pagination to GET /asset endpoint
+- consider POST for creation and PUT for updates of assets
 - add database for data persistence (e.g. Postgres)
 - add appropriate indexes for DB query performance
 - add caching (Redis) for fast load of insights
