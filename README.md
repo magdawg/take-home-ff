@@ -83,18 +83,20 @@ make down
 This is a POC app. Prefer simplicity and document production requirements.
 
 ### Functional requirements/assumptions
-- assets information is stored in-memory and not perssited when the app shuts down
-- the UI only displays the assets/insights information
+- the UI only displays the assets/insights information; allow sorting and filtering
+- pagination not supported in POC
 - assets creation will not be supported in the UI for now
 - defaulted asset is one who's due date has passed; active asset is one who's due date is in the future
 - asset updates are idempotent (by ID)
 - enforce data validation for creating new assets
 
 ### Non-functional requirements/assumptions
-- authentication is not being considered for POC
+- assets information is stored in-memory and not persisted when the app shuts down
+- authentication and security is not being considered for POC
 - concurrency and scalability not an issue for POC
-- pagination of endpoints not an issue for POC
-- graceful error handling; failed API requests don't creash the application
+- pagination of GET /asset not an issue for POC
+- graceful error handling; failed API requests don't crash the application
+- adequate logging for debugging
 - test coverage >80%
 
 
