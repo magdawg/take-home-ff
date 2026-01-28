@@ -143,3 +143,6 @@ This is a POC app. Prefer simplicity and document production requirements.
 - perform load testing
 - improve UI design
 
+
+## AI Usage
+Including .github/copilot-instructions.md that shows how I utilised agentic workflow while working on this project
