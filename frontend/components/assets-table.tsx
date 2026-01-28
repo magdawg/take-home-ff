@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { Asset, getAssets } from "@/api";
 import styles from "./assets-table.module.css";
 
@@ -27,7 +27,7 @@ export function AssetsTable() {
     fetchAssets();
   }, []);
 
-  async function fetchAssets() {
+  const fetchAssets = useCallback(async () => {
     try {
       setLoading(true);
       const data = await getAssets();
@@ -38,9 +38,9 @@ export function AssetsTable() {
     } finally {
       setLoading(false);
     }
-  }
+  }, []);
 
-  function handleSort(column: SortColumn) {
+  const handleSort = useCallback((column: SortColumn) => {
     setTableState((prev) => ({
       ...prev,
       sortColumn: column,
@@ -49,33 +49,37 @@ export function AssetsTable() {
           ? "desc"
           : "asc",
     }));
-  }
+  }, []);
 
-  function handleFilterChange(e: React.ChangeEvent<HTMLSelectElement>) {
+  const handleFilterChange = useCallback((e: React.ChangeEvent<HTMLSelectElement>) => {
     setTableState((prev) => ({
       ...prev,
       filterStatus: e.target.value,
     }));
-  }
+  }, []);
 
-  const filteredAssets = assets.filter(
-    (asset) =>
-      tableState.filterStatus === "all" || asset.status === tableState.filterStatus
-  );
+  const filteredAssets = useMemo(() => {
+    return assets.filter(
+      (asset) =>
+        tableState.filterStatus === "all" || asset.status === tableState.filterStatus
+    );
+  }, [assets, tableState.filterStatus]);
 
-  const sortedAssets = [...filteredAssets].sort((a, b) => {
-    const column = tableState.sortColumn;
-    const direction = tableState.sortDirection === "asc" ? 1 : -1;
+  const sortedAssets = useMemo(() => {
+    return [...filteredAssets].sort((a, b) => {
+      const column = tableState.sortColumn;
+      const direction = tableState.sortDirection === "asc" ? 1 : -1;
 
-    let aValue = a[column];
-    let bValue = b[column];
+      let aValue = a[column];
+      let bValue = b[column];
 
-    if (typeof aValue === "string") {
-      return direction * aValue.localeCompare(String(bValue));
-    }
+      if (typeof aValue === "string") {
+        return direction * aValue.localeCompare(String(bValue));
+      }
 
-    return direction * (Number(aValue) - Number(bValue));
-  });
+      return direction * (Number(aValue) - Number(bValue));
+    });
+  }, [filteredAssets, tableState.sortColumn, tableState.sortDirection]);
 
   if (loading) {
     return <div className={styles.container}>Loading assets...</div>;

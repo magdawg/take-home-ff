@@ -27,15 +27,10 @@ async def create_assets(assets: list[AssetInput]):
         validate_assets_input(assets)
 
         for asset in assets:
-            asset_data = AssetData(
-                id=asset.id,
-                nominal_value=asset.nominal_value,
-                due_date=asset.due_date,
-                interest_rate=asset.interest_rate,
-            )
+            asset_data = AssetData(**asset.model_dump())
             store_asset(asset.id, asset_data)
-            logger.info(f"Asset {asset.id} created/updated")
 
+        logger.info(f"Successfully created/updated {len(assets)} assets")
         return {"message": f"Successfully created/updated {len(assets)} assets"}
     except ValueError as e:
         logger.error(f"Validation error: {e}")
@@ -52,9 +47,7 @@ async def get_assets() -> list[AssetOutput]:
     Status is determined based on due date compared to today (UTC).
     """
     try:
-        result = []
-        for asset_data in get_all_assets():
-            result.append(prepare_asset_output(asset_data))
+        result = [prepare_asset_output(asset_data) for asset_data in get_all_assets()]
         logger.info(f"Retrieved {len(result)} assets")
         return result
     except Exception as e:

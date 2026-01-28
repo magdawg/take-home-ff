@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useCallback, useMemo } from "react";
 import { Insight, getInsights } from "@/api";
 import styles from "./insights-display.module.css";
 
@@ -9,11 +9,7 @@ export function InsightsDisplay() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
-  useEffect(() => {
-    fetchInsights();
-  }, []);
-
-  async function fetchInsights() {
+  const fetchInsights = useCallback(async () => {
     try {
       setLoading(true);
       const data = await getInsights();
@@ -24,7 +20,21 @@ export function InsightsDisplay() {
     } finally {
       setLoading(false);
     }
-  }
+  }, []);
+
+  useEffect(() => {
+    fetchInsights();
+  }, []);
+
+  const insightsByName = useMemo(() => {
+    return insights.reduce(
+      (acc, insight) => {
+        acc[insight.name] = insight.value;
+        return acc;
+      },
+      {} as Record<string, number>
+    );
+  }, [insights]);
 
   if (loading) {
     return <div className={styles.container}>Loading insights...</div>;
@@ -33,14 +43,6 @@ export function InsightsDisplay() {
   if (error) {
     return <div className={styles.error}>Error: {error}</div>;
   }
-
-  const insightsByName = insights.reduce(
-    (acc, insight) => {
-      acc[insight.name] = insight.value;
-      return acc;
-    },
-    {} as Record<string, number>
-  );
 
   return (
     <div className={styles.container}>
